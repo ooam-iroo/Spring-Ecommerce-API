@@ -1,13 +1,7 @@
 package com.example.ecommerce.entity;
 
 import com.example.ecommerce.entity.status.UserStatus;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,4 +40,10 @@ public class User extends BaseEntity {
             orphanRemoval = true
     )
     private List<Address> addresses = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "user",
+            fetch = FetchType.LAZY
+    )
+    private List<Order> orders = new ArrayList<>();
 }
