@@ -46,4 +46,10 @@ public class User extends BaseEntity {
             fetch = FetchType.LAZY
     )
     private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "user",
+            fetch = FetchType.LAZY
+    )
+    private List<Review> reviews = new ArrayList<>();
 }

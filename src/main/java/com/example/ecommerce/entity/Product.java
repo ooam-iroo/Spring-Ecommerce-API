@@ -1,20 +1,14 @@
 package com.example.ecommerce.entity;
 
 import com.example.ecommerce.entity.status.ProductStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -68,4 +62,10 @@ public class Product extends BaseEntity {
         this.sku = sku;
         this.status = status;
     }
+
+    @OneToMany(
+            mappedBy = "product",
+            fetch = FetchType.LAZY
+    )
+    private List<Review> reviews = new ArrayList<>();
 }
