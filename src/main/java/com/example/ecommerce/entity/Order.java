@@ -53,4 +53,10 @@ public class Order extends BaseEntity {
             orphanRemoval = true
     )
     private List<OrderItem> items = new ArrayList<>();
+
+    @OneToOne(
+            mappedBy = "order",
+            fetch = FetchType.LAZY
+    )
+    private Payment payment;
 }
