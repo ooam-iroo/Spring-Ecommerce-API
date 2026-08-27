@@ -1,6 +1,7 @@
 package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.entity.Cart;
+import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.CartRepository;
 import com.example.ecommerce.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart findById(Long id) {
         return cartRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cart not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found: " + id));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.ecommerce.service;
 
 import com.example.ecommerce.entity.Product;
+import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.impl.ProductServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ class ProductServiceTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(
-                RuntimeException.class,
+                ResourceNotFoundException.class,
                 () -> productService.findById(1L)
         );
 

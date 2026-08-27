@@ -1,6 +1,7 @@
 package com.example.ecommerce.service;
 
 import com.example.ecommerce.entity.Cart;
+import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.CartRepository;
 import com.example.ecommerce.service.impl.CartServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ class CartServiceTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(
-                RuntimeException.class,
+                ResourceNotFoundException.class,
                 () -> cartService.findById(1L)
         );
 

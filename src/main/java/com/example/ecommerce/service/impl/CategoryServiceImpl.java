@@ -1,6 +1,7 @@
 package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.entity.Category;
+import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findById(Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + id));
     }
 
     @Override

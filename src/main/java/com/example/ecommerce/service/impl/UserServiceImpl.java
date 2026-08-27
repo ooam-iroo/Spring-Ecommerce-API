@@ -1,6 +1,7 @@
 package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.entity.User;
+import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.UserRepository;
 import com.example.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + id));
     }
 
     @Override
