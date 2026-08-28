@@ -52,4 +52,20 @@ public class User extends BaseEntity {
             fetch = FetchType.LAZY
     )
     private List<Review> reviews = new ArrayList<>();
+
+    public User(
+            String firstName,
+            String lastName,
+            String email,
+            String password,
+            String phoneNumber,
+            UserStatus status
+    ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.status = status;
+    }
 }
