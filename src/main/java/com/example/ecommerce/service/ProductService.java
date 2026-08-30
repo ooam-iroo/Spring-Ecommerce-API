@@ -1,16 +1,20 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.entity.Product;
+import com.example.ecommerce.dto.product.ProductCreateRequest;
+import com.example.ecommerce.dto.product.ProductResponse;
+import com.example.ecommerce.dto.product.ProductUpdateRequest;
 
 import java.util.List;
 
 public interface ProductService {
 
-    Product findById(Long id);
+    ProductResponse create(ProductCreateRequest request);
 
-    List<Product> findAll();
+    ProductResponse findById(Long id);
 
-    Product save(Product product);
+    List<ProductResponse> findAll();
+
+    ProductResponse update(Long id, ProductUpdateRequest request);
 
     void deleteById(Long id);
 }

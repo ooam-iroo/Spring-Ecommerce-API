@@ -68,4 +68,22 @@ public class Product extends BaseEntity {
             fetch = FetchType.LAZY
     )
     private List<Review> reviews = new ArrayList<>();
+
+    public void update(
+            Category category,
+            String name,
+            String slug,
+            String description,
+            BigDecimal price,
+            String sku,
+            ProductStatus status
+    ) {
+        this.category = category;
+        this.name = name;
+        this.slug = slug;
+        this.description = description;
+        this.price = price;
+        this.sku = sku;
+        this.status = status;
+    }
 }
