@@ -42,4 +42,14 @@ public class Category extends BaseEntity {
         this.slug = slug;
         this.parent = parent;
     }
+
+    public void update(
+            String name,
+            String slug,
+            Category parent
+    ) {
+        this.name = name;
+        this.slug = slug;
+        this.parent = parent;
+    }
 }

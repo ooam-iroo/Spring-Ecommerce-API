@@ -1,16 +1,20 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.entity.Category;
+import com.example.ecommerce.dto.category.CategoryCreateRequest;
+import com.example.ecommerce.dto.category.CategoryResponse;
+import com.example.ecommerce.dto.category.CategoryUpdateRequest;
 
 import java.util.List;
 
 public interface CategoryService {
 
-    Category findById(Long id);
+    CategoryResponse create(CategoryCreateRequest request);
 
-    List<Category> findAll();
+    CategoryResponse findById(Long id);
 
-    Category save(Category category);
+    List<CategoryResponse> findAll();
+
+    CategoryResponse update(Long id, CategoryUpdateRequest request);
 
     void deleteById(Long id);
 }
