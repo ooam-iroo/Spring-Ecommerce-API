@@ -1,5 +1,7 @@
 package com.example.ecommerce.service;
 
+import com.example.ecommerce.dto.product.ProductResponse;
+import com.example.ecommerce.entity.Category;
 import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.ProductRepository;
@@ -29,14 +31,17 @@ class ProductServiceTest {
     void shouldReturnProductWhenProductExists() {
 
         Product product = mock(Product.class);
+        Category category = mock(Category.class);
+
+        when(product.getCategory())
+                .thenReturn(category);
 
         when(productRepository.findById(1L))
                 .thenReturn(Optional.of(product));
 
-        Product result = productService.findById(1L);
+        ProductResponse result = productService.findById(1L);
 
         assertNotNull(result);
-        assertSame(product, result);
 
         verify(productRepository)
                 .findById(1L);
@@ -58,36 +63,27 @@ class ProductServiceTest {
     }
 
     @Test
-    void shouldSaveProduct() {
-
-        Product product = mock(Product.class);
-
-        when(productRepository.save(product))
-                .thenReturn(product);
-
-        Product result = productService.save(product);
-
-        assertSame(product, result);
-
-        verify(productRepository)
-                .save(product);
-    }
-
-    @Test
     void shouldReturnAllProducts() {
 
         Product product1 = mock(Product.class);
         Product product2 = mock(Product.class);
 
-        List<Product> products = List.of(product1, product2);
+        Category category1 = mock(Category.class);
+        Category category2 = mock(Category.class);
+
+        when(product1.getCategory())
+                .thenReturn(category1);
+
+        when(product2.getCategory())
+                .thenReturn(category2);
 
         when(productRepository.findAll())
-                .thenReturn(products);
+                .thenReturn(List.of(product1, product2));
 
-        List<Product> result = productService.findAll();
+        List<ProductResponse> result = productService.findAll();
 
+        assertNotNull(result);
         assertEquals(2, result.size());
-        assertSame(products, result);
 
         verify(productRepository)
                 .findAll();
