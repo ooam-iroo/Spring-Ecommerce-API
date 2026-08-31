@@ -1,16 +1,21 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.entity.Cart;
-
-import java.util.List;
+import com.example.ecommerce.dto.cart.CartItemAddRequest;
+import com.example.ecommerce.dto.cart.CartItemUpdateRequest;
+import com.example.ecommerce.dto.cart.CartResponse;
 
 public interface CartService {
 
-    Cart findById(Long id);
+    CartResponse getCart();
 
-    List<Cart> findAll();
+    CartResponse addItem(CartItemAddRequest request);
 
-    Cart save(Cart cart);
+    CartResponse updateItem(
+            Long productId,
+            CartItemUpdateRequest request
+    );
 
-    void deleteById(Long id);
+    void removeItem(Long productId);
+
+    void clearCart();
 }

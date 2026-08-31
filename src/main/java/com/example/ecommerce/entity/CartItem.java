@@ -27,9 +27,39 @@ public class CartItem extends BaseEntity {
     @Column(nullable = false)
     private int quantity;
 
-    public CartItem(Cart cart, Product product, int quantity) {
+    public CartItem(
+            Cart cart,
+            Product product,
+            int quantity
+    ) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException(
+                    "Cart item quantity must be greater than zero"
+            );
+        }
+
         this.cart = cart;
         this.product = product;
         this.quantity = quantity;
+    }
+
+    public void updateQuantity(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException(
+                    "Cart item quantity must be greater than zero"
+            );
+        }
+
+        this.quantity = quantity;
+    }
+
+    public void increaseQuantity(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException(
+                    "Quantity must be greater than zero"
+            );
+        }
+
+        this.quantity += quantity;
     }
 }
