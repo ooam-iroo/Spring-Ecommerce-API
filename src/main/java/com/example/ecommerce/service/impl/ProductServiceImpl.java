@@ -13,6 +13,11 @@ import com.example.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.ecommerce.dto.product.ProductFilterRequest;
+import com.example.ecommerce.repository.specification.ProductSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -62,11 +67,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProductResponse> findAll() {
-        return productRepository.findAll()
-                .stream()
-                .map(this::toResponse)
-                .toList();
+    public Page<ProductResponse> findAll(
+            ProductFilterRequest filter,
+            Pageable pageable
+    ) {
+
+        Specification<Product> specification =
+                Specification
+                        .where(ProductSpecification.nameContains(filter.name()))
+                        .and(ProductSpecification.hasCategory(filter.categoryId()))
+                        .and(ProductSpecification.hasStatus(filter.status()))
+                        .and(ProductSpecification.priceGreaterThanOrEqual(filter.minPrice()))
+                        .and(ProductSpecification.priceLessThanOrEqual(filter.maxPrice()));
+
+        return productRepository
+                .findAll(specification, pageable)
+                .map(this::toResponse);
     }
 
     @Override

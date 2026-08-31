@@ -1,10 +1,11 @@
 package com.example.ecommerce.service;
 
 import com.example.ecommerce.dto.product.ProductCreateRequest;
+import com.example.ecommerce.dto.product.ProductFilterRequest;
 import com.example.ecommerce.dto.product.ProductResponse;
 import com.example.ecommerce.dto.product.ProductUpdateRequest;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
@@ -12,7 +13,10 @@ public interface ProductService {
 
     ProductResponse findById(Long id);
 
-    List<ProductResponse> findAll();
+    Page<ProductResponse> findAll(
+            ProductFilterRequest filter,
+            Pageable pageable
+    );
 
     ProductResponse update(Long id, ProductUpdateRequest request);
 
