@@ -65,4 +65,28 @@ public class Address extends BaseEntity {
         this.unit = unit;
         this.defaultAddress = defaultAddress;
     }
+
+    public void update(
+            String title,
+            String country,
+            String city,
+            String postalCode,
+            String street,
+            String building,
+            String unit,
+            boolean defaultAddress
+    ) {
+        this.title = title;
+        this.country = country;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.street = street;
+        this.building = building;
+        this.unit = unit;
+        this.defaultAddress = defaultAddress;
+    }
+
+    public void setDefaultAddress(boolean defaultAddress) {
+        this.defaultAddress = defaultAddress;
+    }
 }
