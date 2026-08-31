@@ -1,5 +1,6 @@
 package com.example.ecommerce.entity;
 
+import com.example.ecommerce.entity.status.UserRole;
 import com.example.ecommerce.entity.status.UserStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -34,6 +35,10 @@ public class User extends BaseEntity {
     @Column(name = "status", nullable = false, length = 20)
     private UserStatus status;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 20)
+    private UserRole role;
+
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -59,7 +64,8 @@ public class User extends BaseEntity {
             String email,
             String password,
             String phoneNumber,
-            UserStatus status
+            UserStatus status,
+            UserRole role
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -67,5 +73,6 @@ public class User extends BaseEntity {
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.status = status;
+        this.role = role;
     }
 }

@@ -4,6 +4,7 @@ import com.example.ecommerce.dto.auth.AuthResponse;
 import com.example.ecommerce.dto.auth.LoginRequest;
 import com.example.ecommerce.dto.auth.RegisterRequest;
 import com.example.ecommerce.entity.User;
+import com.example.ecommerce.entity.status.UserRole;
 import com.example.ecommerce.entity.status.UserStatus;
 import com.example.ecommerce.exception.BusinessException;
 import com.example.ecommerce.repository.UserRepository;
@@ -39,7 +40,8 @@ public class AuthServiceImpl implements AuthService {
                 request.email(),
                 passwordEncoder.encode(request.password()),
                 request.phoneNumber(),
-                UserStatus.ACTIVE
+                UserStatus.ACTIVE,
+                UserRole.USER
         );
 
         userRepository.save(user);
