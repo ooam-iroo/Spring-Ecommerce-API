@@ -1,18 +1,14 @@
 package com.example.ecommerce.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "order_items")
 public class OrderItem extends BaseEntity {
@@ -39,4 +35,23 @@ public class OrderItem extends BaseEntity {
 
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal subtotal;
+
+    public OrderItem(
+            Order order,
+            Product product,
+            String productName,
+            String sku,
+            BigDecimal unitPrice,
+            Integer quantity
+    ) {
+        this.order = order;
+        this.product = product;
+        this.productName = productName;
+        this.sku = sku;
+        this.unitPrice = unitPrice;
+        this.quantity = quantity;
+        this.subtotal = unitPrice.multiply(
+                BigDecimal.valueOf(quantity)
+        );
+    }
 }
