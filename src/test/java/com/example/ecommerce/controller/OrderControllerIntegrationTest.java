@@ -71,7 +71,7 @@ class OrderControllerIntegrationTest {
         mockMvc.perform(
                         post("/api/v1/orders")
                 )
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -316,7 +316,7 @@ class OrderControllerIntegrationTest {
         mockMvc.perform(
                         get("/api/v1/orders")
                 )
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -326,7 +326,7 @@ class OrderControllerIntegrationTest {
         mockMvc.perform(
                         get("/api/v1/orders/1")
                 )
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -336,7 +336,7 @@ class OrderControllerIntegrationTest {
         mockMvc.perform(
                         post("/api/v1/orders/1/cancel")
                 )
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     private User createUser(String email) {
