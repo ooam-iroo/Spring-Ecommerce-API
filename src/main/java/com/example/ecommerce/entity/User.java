@@ -58,6 +58,14 @@ public class User extends BaseEntity {
     )
     private List<Review> reviews = new ArrayList<>();
 
+    public void changeStatus(UserStatus status) {
+        this.status = status;
+    }
+
+    public void changeRole(UserRole role) {
+        this.role = role;
+    }
+
     public User(
             String firstName,
             String lastName,
