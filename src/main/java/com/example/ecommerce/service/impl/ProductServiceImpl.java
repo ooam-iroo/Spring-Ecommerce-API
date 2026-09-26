@@ -18,6 +18,9 @@ import com.example.ecommerce.repository.specification.ProductSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import com.example.ecommerce.config.CacheNames;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -30,6 +33,11 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    @CacheEvict(
+            cacheNames = CacheNames.PRODUCTS,
+            allEntries = true
+    )
+    @Transactional
     public ProductResponse create(ProductCreateRequest request) {
 
         if (productRepository.existsBySlug(request.slug())) {
@@ -60,12 +68,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(
+            cacheNames = CacheNames.PRODUCTS,
+            key = "'id:' + #id"
+    )
     @Transactional(readOnly = true)
     public ProductResponse findById(Long id) {
         return toResponse(findProduct(id));
     }
 
     @Override
+    @Cacheable(
+            cacheNames = CacheNames.PRODUCTS,
+            key = "'list:' + #filter + ':' + #pageable.pageNumber + ':' + #pageable.pageSize + ':' + #pageable.sort"
+    )
     @Transactional(readOnly = true)
     public Page<ProductResponse> findAll(
             ProductFilterRequest filter,
@@ -86,6 +102,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(
+            cacheNames = CacheNames.PRODUCTS,
+            allEntries = true
+    )
+    @Transactional
     public ProductResponse update(
             Long id,
             ProductUpdateRequest request
@@ -122,6 +143,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(
+            cacheNames = CacheNames.PRODUCTS,
+            allEntries = true
+    )
+    @Transactional
     public void deleteById(Long id) {
         Product product = findProduct(id);
 
