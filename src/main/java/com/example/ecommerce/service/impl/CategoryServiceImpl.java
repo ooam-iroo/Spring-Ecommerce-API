@@ -1,5 +1,6 @@
 package com.example.ecommerce.service.impl;
 
+import com.example.ecommerce.config.CacheNames;
 import com.example.ecommerce.dto.category.CategoryCreateRequest;
 import com.example.ecommerce.dto.category.CategoryResponse;
 import com.example.ecommerce.dto.category.CategoryUpdateRequest;
@@ -9,6 +10,9 @@ import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +26,16 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(
+                    cacheNames = CacheNames.CATEGORIES,
+                    allEntries = true
+            ),
+            @CacheEvict(
+                    cacheNames = CacheNames.PRODUCTS,
+                    allEntries = true
+            )
+    })
     public CategoryResponse create(CategoryCreateRequest request) {
 
         if (categoryRepository.existsBySlug(request.slug())) {
@@ -42,12 +56,20 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable(
+            cacheNames = CacheNames.CATEGORIES,
+            key = "'id:' + #id"
+    )
     @Transactional(readOnly = true)
     public CategoryResponse findById(Long id) {
         return toResponse(findCategory(id));
     }
 
     @Override
+    @Cacheable(
+            cacheNames = CacheNames.CATEGORIES,
+            key = "'list'"
+    )
     @Transactional(readOnly = true)
     public List<CategoryResponse> findAll() {
         return categoryRepository.findAll()
@@ -57,6 +79,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(
+                    cacheNames = CacheNames.CATEGORIES,
+                    allEntries = true
+            ),
+            @CacheEvict(
+                    cacheNames = CacheNames.PRODUCTS,
+                    allEntries = true
+            )
+    })
     public CategoryResponse update(
             Long id,
             CategoryUpdateRequest request
@@ -88,6 +120,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(
+                    cacheNames = CacheNames.CATEGORIES,
+                    allEntries = true
+            ),
+            @CacheEvict(
+                    cacheNames = CacheNames.PRODUCTS,
+                    allEntries = true
+            )
+    })
     public void deleteById(Long id) {
         Category category = findCategory(id);
 

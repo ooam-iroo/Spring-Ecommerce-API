@@ -35,7 +35,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @CacheEvict(
             cacheNames = CacheNames.PRODUCTS,
-            allEntries = true
+            allEntries = true,
+            beforeInvocation = true
     )
     @Transactional
     public ProductResponse create(ProductCreateRequest request) {
@@ -104,7 +105,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @CacheEvict(
             cacheNames = CacheNames.PRODUCTS,
-            allEntries = true
+            allEntries = true,
+            beforeInvocation = true
     )
     @Transactional
     public ProductResponse update(
@@ -145,7 +147,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @CacheEvict(
             cacheNames = CacheNames.PRODUCTS,
-            allEntries = true
+            allEntries = true,
+            beforeInvocation = true
     )
     @Transactional
     public void deleteById(Long id) {
