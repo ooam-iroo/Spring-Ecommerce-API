@@ -2,6 +2,7 @@ package com.example.ecommerce.cache;
 
 import com.example.ecommerce.config.CacheNames;
 import com.example.ecommerce.dto.product.ProductCreateRequest;
+import com.example.ecommerce.dto.product.ProductFilterRequest;
 import com.example.ecommerce.dto.product.ProductResponse;
 import com.example.ecommerce.dto.product.ProductUpdateRequest;
 import com.example.ecommerce.entity.Category;
@@ -10,12 +11,15 @@ import com.example.ecommerce.entity.status.ProductStatus;
 import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.ProductService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
@@ -39,16 +43,17 @@ class ProductCacheIntegrationTest extends RedisIntegrationTestBase {
     @Autowired
     private CacheManager cacheManager;
 
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
+
     private Category category;
     private String productSlug;
     private String productSku;
 
     @BeforeEach
     void setUp() {
-        Cache cache = cacheManager.getCache(CacheNames.PRODUCTS);
-
-        if (cache != null) {
-            cache.clear();
+        try (var connection = redisConnectionFactory.getConnection()) {
+            connection.serverCommands().flushDb();
         }
 
         String uniqueSlug = "electronics-" + System.nanoTime();
@@ -154,5 +159,47 @@ class ProductCacheIntegrationTest extends RedisIntegrationTestBase {
         productService.deleteById(product.getId());
 
         assertNull(cache.get("id:" + product.getId()));
+    }
+
+    @Test
+    void shouldEvictFilteredProductListCacheAfterUpdate() {
+        Product product = productRepository.saveAndFlush(
+                new Product(
+                        category,
+                        "Laptop",
+                        productSlug,
+                        "Test laptop",
+                        new BigDecimal("1000.00"),
+                        productSku,
+                        ProductStatus.ACTIVE
+                )
+        );
+
+        ProductFilterRequest filter =
+                new ProductFilterRequest(null, category.getId(), ProductStatus.ACTIVE, null, null);
+        Pageable pageable = PageRequest.of(0, 10);
+
+        productService.findAll(filter, pageable);
+
+        Cache cache = cacheManager.getCache(CacheNames.PRODUCTS);
+
+        assertNotNull(cache);
+        String cacheKey = "list:" + filter + ":" + pageable.getPageNumber()
+                + ":" + pageable.getPageSize() + ":" + pageable.getSort();
+        assertNotNull(cache.get(cacheKey));
+
+        ProductUpdateRequest request = new ProductUpdateRequest(
+                category.getId(),
+                "Updated Laptop",
+                "updated-" + productSlug,
+                "Updated description",
+                new BigDecimal("1200.00"),
+                productSku,
+                ProductStatus.ACTIVE
+        );
+
+        productService.update(product.getId(), request);
+
+        assertNull(cache.get(cacheKey));
     }
 }

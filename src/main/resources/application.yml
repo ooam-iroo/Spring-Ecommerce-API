@@ -3,9 +3,9 @@ spring:
     name: spring-ecommerce-api
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecommerce
-    username: ecommerce
-    password: ecommerce
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/ecommerce}
+    username: ${SPRING_DATASOURCE_USERNAME:ecommerce}
+    password: ${SPRING_DATASOURCE_PASSWORD:ecommerce}
 
   jpa:
     hibernate:
@@ -30,6 +30,10 @@ server:
   port: 8080
 
 management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
   endpoints:
     web:
       exposure:
