@@ -1,56 +1,95 @@
 <div align="center">
 
-# Spring E-commerce API
+<h1>Spring E-commerce API</h1>
 
-Production-oriented e-commerce backend built with Java 21, Spring Boot 4.1.1, PostgreSQL, Redis, JWT, Docker, and Testcontainers.
+<p><strong>A production-oriented e-commerce backend portfolio project built with Java 21 and Spring Boot 4.</strong></p>
 
-![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-6DB33F?logo=springboot&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql&logoColor=white)
-![Redis](https://img.shields.io/badge/Redis-7-DC382D?logo=redis&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
-![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)
+<p>
+  <a href="https://github.com/ooam-iroo/Spring-Ecommerce-API"><img src="https://img.shields.io/badge/GitHub-Repository-181717?logo=github" alt="GitHub repository"></a>
+  <a href="https://github.com/ooam-iroo/Spring-Ecommerce-API/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ooam-iroo/Spring-Ecommerce-API/ci.yml?label=CI&logo=githubactions&logoColor=white" alt="CI status"></a>
+  <img src="https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white" alt="Java 21">
+  <img src="https://img.shields.io/badge/Spring%20Boot-4.1.1-6DB33F?logo=springboot&logoColor=white" alt="Spring Boot 4.1.1">
+  <img src="https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL 17">
+  <img src="https://img.shields.io/badge/Redis-7-DC382D?logo=redis&logoColor=white" alt="Redis 7">
+  <img src="https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white" alt="Docker Compose">
+</p>
+
+<p>
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#api-documentation">Swagger</a> ·
+  <a href="#architecture">Architecture</a> ·
+  <a href="#testing">Testing</a>
+</p>
 
 </div>
 
-> Replace the CI badge with the repository-specific workflow badge after publishing the repository. Its status is not claimed here until GitHub executes the workflow.
+> **Portfolio note:** This README distinguishes implemented features from checks that still require a successful external Docker or GitHub Actions run.
 
-## Overview
+## At a glance
 
-Spring E-commerce API is a layered REST backend covering the main e-commerce workflow:
-
-- JWT authentication, BCrypt password hashing, and role-based authorization
-- User, address, category, product, cart, order, payment, and review APIs
-- Admin user, product, category, order, and dashboard APIs
-- Product filtering, pagination, validation, and business rules
-- PostgreSQL persistence with JPA/Hibernate and Flyway migrations
-- Redis-backed DTO caching for products and categories
-- PostgreSQL/Redis integration tests with Testcontainers
-- Docker Compose deployment and GitHub Actions CI configuration
-- OpenAPI documentation with JWT Bearer authentication
-
-## Stack
-
-| Area | Technology |
+| Capability | Implementation |
 |---|---|
-| Runtime | Java 21 |
-| Web | Spring Boot 4.1.1, Spring MVC |
-| Security | Spring Security, JWT, BCrypt, method security |
-| Persistence | Spring Data JPA, Hibernate, PostgreSQL 17 |
-| Migrations | Flyway |
-| Cache | Spring Cache, Spring Data Redis, Redis 7 |
-| Validation | Jakarta Bean Validation |
-| Testing | JUnit 5, Mockito, MockMvc, Testcontainers |
-| API docs | springdoc OpenAPI 3.1.1, Swagger UI |
-| Delivery | Maven, Docker, Docker Compose, GitHub Actions |
+| Authentication | Stateless JWT, BCrypt passwords, method security |
+| Authorization | User/admin role-based access control |
+| Catalog | Products, categories, filtering, pagination |
+| Commerce | Cart, orders, payments, reviews, addresses |
+| Administration | User, product, category, order, dashboard APIs |
+| Persistence | PostgreSQL, JPA/Hibernate, Flyway |
+| Performance | Redis DTO caching and mutation invalidation |
+| Quality | Unit, MockMvc, admin, and Testcontainers tests |
+| Delivery | Multi-stage Docker image, Compose, GitHub Actions |
+
+## Contents
+
+- [Features](#features)
+- [Technology](#technology)
+- [Architecture](#architecture)
+- [Quick start](#quick-start)
+- [Configuration](#configuration)
+- [API documentation](#api-documentation)
+- [Authentication](#authentication)
+- [API surface](#api-surface)
+- [Error contract](#error-contract)
+- [Testing](#testing)
+- [Operations and deployment](#operations-and-deployment)
+- [CI](#ci)
+- [Verification status](#verification-status)
+
+## Features
+
+<table>
+<tr><td>🔐 <strong>Security</strong></td><td>JWT authentication, BCrypt, stateless sessions, method-level authorization, admin-only operations</td></tr>
+<tr><td>🛍️ <strong>Commerce</strong></td><td>Catalog browsing, cart management, order lifecycle, payment/refund flow, product reviews</td></tr>
+<tr><td>⚡ <strong>Caching</strong></td><td>Redis-backed product and category DTO caches with invalidation on mutations</td></tr>
+<tr><td>🧪 <strong>Testing</strong></td><td>JUnit 5, Mockito, MockMvc, PostgreSQL and Redis Testcontainers</td></tr>
+<tr><td>📚 <strong>Documentation</strong></td><td>OpenAPI 3, Swagger UI, examples, environment reference, Docker and CI instructions</td></tr>
+</table>
+
+## Technology
+
+<p>
+  <img src="https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white">
+  <img src="https://img.shields.io/badge/Spring%20Security-JWT-6DB33F?logo=springsecurity&logoColor=white">
+  <img src="https://img.shields.io/badge/Spring%20Data-JPA%20%7C%20Redis-6DB33F?logo=spring&logoColor=white">
+  <img src="https://img.shields.io/badge/Flyway-Migrations-CC0200?logo=flyway&logoColor=white">
+  <img src="https://img.shields.io/badge/Testcontainers-Integration%20tests-2496ED?logo=docker&logoColor=white">
+  <img src="https://img.shields.io/badge/OpenAPI-Swagger%20UI-85EA2D?logo=swagger&logoColor=black">
+</p>
 
 ## Architecture
 
-```text
-Client -> JWT filter -> Controllers -> Services/transactions -> Repositories -> PostgreSQL
-                                      |                         |
-                                      +------ Redis DTO cache -+
+```mermaid
+flowchart LR
+    Client[Web or API Client] --> Security[JWT Security Filter]
+    Security --> Controllers[REST Controllers]
+    Controllers --> Services[Transactional Services]
+    Services --> Repositories[Spring Data Repositories]
+    Repositories --> PostgreSQL[(PostgreSQL)]
+    Services <--> Cache[(Redis DTO Cache)]
+    Migrations[Flyway Migrations] --> PostgreSQL
 ```
+
+The codebase uses a conventional layered architecture:
 
 ```text
 com.example.ecommerce
@@ -58,75 +97,83 @@ com.example.ecommerce
 ├── controller      Public and admin HTTP endpoints
 ├── dto             Request and response contracts
 ├── entity          JPA entities and domain state
-├── exception       API error handling and domain exceptions
-├── repository      Spring Data repositories and specifications
-├── security        JWT and authenticated-user support
-└── service         Business services and transaction boundaries
+├── exception       Error contract and global exception handling
+├── repository      Data access and product specifications
+├── security        JWT validation and authenticated-user support
+└── service         Business rules and transaction boundaries
 ```
 
-PostgreSQL is the source of truth. Redis stores response DTOs rather than managed JPA entities. Product and category mutations invalidate affected cache entries, including product list/filter/page results.
+PostgreSQL is the source of truth. Redis stores serialized response DTOs rather than managed JPA entities. Product and category mutations invalidate affected read caches, including filtered and paginated product results.
 
-## Prerequisites
+## Quick start
+
+### Prerequisites
 
 - JDK 21
+- Docker Engine/Desktop with Compose
 - Maven 3.9+ or the included Maven Wrapper
-- Docker Engine/Desktop with Compose support
-- Docker access for Testcontainers integration tests
+- Docker access for Testcontainers tests
 
-## Configuration
-
-Production values must be supplied through environment variables. Local defaults are for development only.
-
-| Variable | Purpose | Local default |
-|---|---|---|
-| `SPRING_DATASOURCE_URL` | PostgreSQL JDBC URL | `jdbc:postgresql://localhost:5432/ecommerce` |
-| `SPRING_DATASOURCE_USERNAME` | Database username | `ecommerce` |
-| `SPRING_DATASOURCE_PASSWORD` | Database password | `ecommerce` |
-| `REDIS_HOST` | Redis hostname | `localhost` |
-| `REDIS_PORT` | Redis port | `6379` |
-| `JWT_SECRET` | JWT signing secret; use at least 32 characters | Development placeholder |
-| `SPRING_PROFILES_ACTIVE` | Optional Spring profile | unset |
-
-Never commit production credentials, JWT secrets, `.env` files, or tokens.
-
-## Run with Docker Compose
+### Start the complete local stack
 
 ```bash
 docker compose up --build
 ```
 
-The API listens on `http://localhost:8080`. Compose provides `postgres`, `redis`, and `api` services, health checks, service-name networking, and named data volumes.
+Services:
+
+| Service | Address | Purpose |
+|---|---|---|
+| API | `http://localhost:8080` | Spring Boot application |
+| Swagger | `http://localhost:8080/swagger-ui.html` | Interactive API docs |
+| PostgreSQL | `localhost:5432` | Persistent relational data |
+| Redis | `localhost:6379` | Cache and health contributor |
+
+Stop services:
 
 ```bash
 docker compose down
 ```
 
-Use `docker compose down -v` only when intentionally deleting local database and Redis volumes.
+Use `docker compose down -v` only when intentionally deleting local data volumes.
 
-## Run locally
-
-Start PostgreSQL and Redis with Compose, then run the application directly:
+### Run the API outside Docker
 
 ```bash
 docker compose up -d postgres redis
 ./mvnw spring-boot:run
 ```
 
+## Configuration
+
+Local defaults are development-only. Supply production values through the environment:
+
+| Variable | Description | Local default |
+|---|---|---|
+| `SPRING_DATASOURCE_URL` | PostgreSQL JDBC URL | `jdbc:postgresql://localhost:5432/ecommerce` |
+| `SPRING_DATASOURCE_USERNAME` | Database username | `ecommerce` |
+| `SPRING_DATASOURCE_PASSWORD` | Database password | `ecommerce` |
+| `REDIS_HOST` | Redis hostname | `localhost` |
+| `REDIS_PORT` | Redis port | `6379` |
+| `JWT_SECRET` | JWT signing secret; use 32+ characters | Development placeholder |
+| `SPRING_PROFILES_ACTIVE` | Optional active profile | unset |
+
+Never commit real credentials, JWT secrets, `.env` files, or access tokens.
+
 ## API documentation
 
-After startup:
+| Resource | URL |
+|---|---|
+| Swagger UI | [`/swagger-ui.html`](http://localhost:8080/swagger-ui.html) |
+| OpenAPI JSON | [`/v3/api-docs`](http://localhost:8080/v3/api-docs) |
+| OpenAPI YAML | [`/v3/api-docs.yaml`](http://localhost:8080/v3/api-docs.yaml) |
+| Health | [`/actuator/health`](http://localhost:8080/actuator/health) |
 
-- Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-- OpenAPI JSON: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
-- OpenAPI YAML: [http://localhost:8080/v3/api-docs.yaml](http://localhost:8080/v3/api-docs.yaml)
+Swagger is configured with JWT Bearer authentication. Select **Authorize** and enter `Bearer <access-token>`.
 
-Use Swagger UI’s **Authorize** button with:
+## Authentication
 
-```text
-Bearer <access-token>
-```
-
-## Authentication example
+Register and log in:
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/auth/register \
@@ -138,20 +185,20 @@ curl -X POST http://localhost:8080/api/v1/auth/login \
   -d '{"email":"ada@example.com","password":"StrongPassword123"}'
 ```
 
-Use the returned token on protected endpoints:
+Call a protected endpoint:
 
 ```bash
 curl http://localhost:8080/api/v1/cart \
   -H 'Authorization: Bearer <access-token>'
 ```
 
-## Endpoint groups
+## API surface
 
-| Group | Base path | Access |
+| Domain | Base path | Access |
 |---|---|---|
 | Authentication | `/api/v1/auth` | Public |
-| Products | `/api/v1/products` | Public reads; mutations authenticated |
-| Categories | `/api/v1/categories` | Public reads; mutations authenticated |
+| Products | `/api/v1/products` | Public reads; authenticated mutations |
+| Categories | `/api/v1/categories` | Public reads; authenticated mutations |
 | Cart | `/api/v1/cart` | Authenticated user |
 | Orders | `/api/v1/orders` | Authenticated user |
 | Payments | `/api/v1/orders/{orderId}/payment` | Authenticated user |
@@ -163,11 +210,9 @@ curl http://localhost:8080/api/v1/cart \
 | Admin orders | `/api/v1/admin/orders` | Admin role |
 | Dashboard | `/api/v1/admin/dashboard` | Admin role |
 
-Product listing supports filtering by name, category, status, minimum price, and maximum price, plus pagination. Swagger contains the exact parameter and schema definitions.
+Product listing supports name, category, status, minimum-price, maximum-price, pagination, and sorting parameters. Swagger is the authoritative source for exact schemas and parameter names.
 
-## Error responses
-
-Errors use a consistent response contract:
+## Error contract
 
 ```json
 {
@@ -181,49 +226,42 @@ Errors use a consistent response contract:
 }
 ```
 
-The application handles not-found, business, validation, malformed-request, data-integrity, endpoint-not-found, and unexpected internal errors. A valid `X-Correlation-Id` is accepted; otherwise one is generated and returned.
-
-## Health and operations
-
-```text
-GET /actuator/health
-```
-
-The current configuration exposes only `health` and `info`. PostgreSQL and Redis health contributors are provided by Actuator when those services are available.
+The application handles resource-not-found, business, validation, malformed-request, data-integrity, endpoint-not-found, and unexpected internal errors. A valid `X-Correlation-Id` is accepted; otherwise one is generated, returned, and placed in the logging context for the request.
 
 ## Testing
 
 ```bash
+# Full unit and integration suite
 ./mvnw test
-```
 
-Testcontainers tests require Docker. Run the Redis integration class alone with:
-
-```bash
+# Redis/PostgreSQL Testcontainers class
 ./mvnw -Dtest=ProductCacheIntegrationTest test
-```
 
-Compile and package without tests:
-
-```bash
+# Compile/package without executing tests
 ./mvnw -DskipTests package
 ```
 
-Do not claim a green full suite unless the command has completed successfully in the target environment.
+Testcontainers tests require a working Docker environment. Do not describe the full suite as green unless the exact command completes successfully.
 
-## Docker image
+## Operations and deployment
 
-The multi-stage Dockerfile uses a Maven Java 21 build image and a Java 21 JRE runtime image. For production, add a non-root runtime user, external secret management, image scanning, and network policies.
+The Dockerfile uses a Maven Java 21 build stage and Java 21 JRE runtime stage. Compose configures health checks for PostgreSQL and Redis, service-name networking, startup dependencies, and named persistence volumes.
+
+For production deployment, add a non-root runtime user, external secret management, image scanning, TLS/reverse proxy configuration, resource limits, backups, and network policies.
 
 ## CI
 
-`.github/workflows/ci.yml` runs on pushes to `main`/`master` and pull requests. It configures Java 21, Maven caching, and `./mvnw -B verify`; GitHub-hosted runners provide Docker for Testcontainers.
+`.github/workflows/ci.yml` runs on pushes to `main`/`master` and pull requests. It configures Java 21 and Maven caching, then runs `./mvnw -B verify`. GitHub-hosted runners provide Docker for Testcontainers.
 
-The workflow file exists, but its success must be confirmed by an actual GitHub Actions run.
+The workflow is configured in the repository; its success must be confirmed by an actual GitHub Actions run.
 
 ## Verification status
 
-The Maven package build has been verified with tests skipped. The repository also contains extensive unit, controller, admin, and Testcontainers integration tests. The latest Redis cache run has reported cache-population failures and requires additional investigation before the complete suite can be called green. Docker Compose startup and GitHub-hosted CI have not been verified from this workspace.
+- Maven package build: verified with tests skipped.
+- Swagger/OpenAPI dependency and application compilation: verified by package build.
+- Unit and integration test suite: present, but the latest Redis cache run reported cache-population failures.
+- Docker Compose end-to-end startup: not verified from this workspace.
+- GitHub Actions execution: configured but not externally verified.
 
 ## License
 
